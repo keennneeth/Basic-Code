@@ -1,0 +1,70 @@
+#include <iostream>
+
+using namespace std;
+
+class Distance {
+    private:
+    int foot;
+    float inches;
+
+public:
+void set()
+{
+cout << "Enter distance" << endl;
+cout << "Feet: ";
+cin >> foot;
+cout << "Inches: ";
+cin >> inches;
+
+if (inches >= 12)
+{
+    int feet=inches/12;
+    inches-=feet*12;
+    foot+=feet;
+}
+}
+
+void disp()
+{
+cout << "The distance is " << foot << "' feet" << " and " << inches << " inches" << endl;
+}
+
+Distance operator+ (Distance & Distance2)
+{
+
+Distance distance;
+distance.foot=foot+Distance2.foot;
+distance.inches=inches+Distance2.inches;
+if (inches >= 12)
+{
+    int feet= inches/12;
+    distance.inches-=feet*12;
+    distance.foot+=feet;
+}
+return distance;
+}
+};
+
+int main()
+{
+
+cout << "Distance 1: ";
+Distance distance1;
+distance1.set();
+
+cout << "Distance 2: ";
+Distance distance2;
+distance2.set();
+
+cout << "Display 1: ";
+distance1.disp();
+
+cout << "Display 2: ";
+distance2.disp();
+
+Distance total=distance1+distance2;
+cout << "The Total is: ";
+total.disp();
+
+return 0;
+}
