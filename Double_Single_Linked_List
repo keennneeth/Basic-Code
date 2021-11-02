@@ -1,0 +1,393 @@
+#include<iostream>
+using namespace std;
+
+
+struct node
+{
+	int data;
+	node *next;	
+
+    int value;
+    struct node* nextDLL;
+    struct node* prev;
+};
+struct node* head;
+struct node* tail;
+struct node* tmp;
+
+void init()
+{
+    head=NULL;
+    tail=NULL;
+}
+
+void InsertHead(int element)
+{
+    struct node* newItem;
+    newItem=new node;
+    if(head==NULL)
+    {
+        head=newItem;
+        newItem->prev=NULL;
+        newItem->value=element;
+        newItem->next=NULL;
+        tail=newItem;
+    }
+    else
+    {
+        newItem->next=head;
+        newItem->value=element;
+        newItem->prev=NULL;
+        head->prev=newItem;
+        head=newItem;
+    }
+}
+
+void InsertTail(int element)
+{
+    struct node* newItem;
+    newItem=new node;
+    newItem->value=element;
+    if(head==NULL)
+    {
+        head=newItem;
+        newItem->prev=NULL;
+        newItem->next=NULL;
+        tail=newItem;
+    }
+    else
+    {
+        newItem->prev=tail;
+        tail->next=newItem;
+        newItem->next=NULL;
+        tail=newItem;
+    }
+}
+void DeleteHead()
+{
+    if(head==NULL)
+    {
+        return;
+    }
+    if(head==tail)///one element in the list
+    {
+        struct node* cur;
+        cur=head;
+        head=NULL;
+        tail=NULL;
+        delete cur;
+        return;
+    }
+    else
+    {
+        struct node* cur;
+        cur=head;
+        head=head->next;
+        head->prev=NULL;
+        delete cur;
+    }
+}
+void DeleteTail()
+{
+    if(head==NULL) return;
+    if(head==tail)
+    {
+        struct node* cur;
+        cur=head;
+        head=NULL;
+        tail=NULL;
+        delete cur;
+        return;
+    }
+    else
+    {
+        struct node* cur;
+        cur=tail;
+        tail=tail->prev;
+        tail->next=NULL;
+        delete cur;
+    }
+}
+void SearchAndDelete(int element)
+{
+    struct node* temp;
+    temp=head;
+    if(head==tail)
+    {
+        if(head->value!=element)
+        {
+            cout<<"Number not in the list"<<endl;
+            return;
+        }
+        head=NULL;
+        tail=NULL;
+        delete temp;
+        return;
+    }
+    if(head->value==element)
+    {
+        head=head->next;
+        head->prev=NULL;
+        delete temp;
+        return;
+    }
+    else if(tail->value==element)
+    {
+        temp=tail;
+        tail=tail->prev;
+        tail->next=NULL;
+        delete temp;
+        return;
+    }
+    while(temp->value!=element)
+    {
+        temp=temp->next;
+        if(temp==NULL)
+        {
+            cout<<"Number not found"<<endl;
+            return;
+        }
+    }
+    temp->next->prev=temp->prev;
+    temp->prev->next=temp->next;
+    delete temp;
+}
+
+void PrintDoubleLinkedList()
+{
+    struct node* temp;
+    temp=head;
+    while(temp!=NULL)
+    {
+        printf("%d->",temp->value);
+        temp=temp->next;
+    }
+    puts("");
+}
+
+//SINGLE LINKED LIST 
+
+
+class list
+{
+		private:
+		node *head, *tail;
+		public:
+		list()
+		{
+			head=NULL;
+			tail=NULL;
+		}
+		void createnode(int value)
+		{
+			node *temp=new node;
+			temp->data=value;
+			temp->next=NULL;
+			if(head==NULL)
+			{
+				head=temp;
+				tail=temp;
+				temp=NULL;
+			}
+			else
+			{	
+				tail->next=temp;
+				tail=temp;
+			}
+		}
+		void PrintSingleLinkedList()
+		{
+			node *temp=new node;
+			temp=head;
+			while(temp!=NULL)
+			{
+				cout<<temp->data <<" <-> ";
+				temp=temp->next;
+			}
+		}
+		void InsertHead(int value)
+		{
+			node *temp=new node;
+			temp->data=value;
+			temp->next=head;
+			head=temp;
+		}
+
+void InsertTail (int value)
+        {
+node *last = new node;
+last -> value = value;
+last -> next = NULL;
+
+if (head == NULL){
+    head = last;
+}
+else{
+node *temp = head;
+while (temp -> next != NULL){
+temp = temp -> next;
+}
+temp -> next = last;
+}
+        }
+		
+		void DeleteHead()
+		{
+			node *temp=new node;
+			temp=head;
+			head=head->next;
+			delete temp;
+		}
+		void DeleteTail()
+		{
+			node *current=new node;
+			node *previous=new node;
+			current=head;
+			while(current->next!=NULL)
+			{
+				previous=current;
+				current=current->next;	
+			}
+			tail=previous;
+			previous->next=NULL;
+			delete current;
+		}
+		void SearchAndDelete1(int pos)
+		{
+			node *current=new node;
+			node *previous=new node;
+			current=head;
+			for(int i=1;i<pos;i++)
+			{
+				previous=current;
+				current=current->next;
+			}
+			previous->next=current->next;
+		}
+};
+int main()
+{
+    
+node *head = NULL;
+node *last = NULL;
+
+    list obj;   
+    init();
+    int choice;
+    int number;
+
+    while(1)
+    {
+        cout << " " << endl;
+        cout << "Single Linked List" << endl;
+        cout << ("(0.Start Here) (1.IH) (2.IT) (3.DH) (4.DT) (5.SND) (6.PSLL)") << endl;
+        cout << " "<< endl;
+        cout << "Double Linked List" << endl;
+        cout << ("(7.IH) (8.IT) (9.DH) (10.DT) (11.SND) (12.PDLL)") << endl;
+        cout << " " << endl;
+        cout << "13.) Exit" << endl;
+        cin>>choice;
+    if(choice ==0)
+    {
+    cout << "Start with a number: ";
+    cin >> number;   
+    obj.createnode(number);
+    obj.PrintSingleLinkedList();
+    }
+
+ if(choice ==1)
+    {
+    cout << "Enter head: ";
+    cin >> number;
+    obj.InsertHead(number);
+    obj.PrintSingleLinkedList();
+    }
+if(choice ==2)
+    {
+    cout << "Enter Tail: ";
+    cin >> number;
+    obj.InsertTail(number);
+    obj.PrintSingleLinkedList();
+    }
+ if(choice ==3)
+    {
+    cout << "Deleting Head... " << endl;
+    obj.DeleteHead();
+    obj.PrintSingleLinkedList();
+    }
+  if(choice ==4)
+    {
+    cout << "Deleting Tail... "<< endl;
+    obj.DeleteTail();
+    obj.PrintSingleLinkedList();
+    }       
+ if(choice ==5)
+    {
+    cout << "Which position would you like to delete: ";
+    cin >> number;
+    obj.SearchAndDelete1(number);
+    obj.PrintSingleLinkedList();
+    }   
+    if(choice ==6)
+    {
+    cout << "Printing...." << endl;
+    obj.PrintSingleLinkedList();
+    }    
+
+
+
+    // For Double Linked List  
+   
+    if(choice==7)
+     {
+    int element;
+    cout<<"Enter Head: ";
+    cin>>element;
+    InsertHead(element);
+    PrintDoubleLinkedList();
+    }
+    else if(choice==8)
+        {
+    int element;
+    cout<<"Enter Tail: ";
+    cin>>element;
+    InsertTail(element);
+    PrintDoubleLinkedList();
+        }
+       
+    else if(choice==9)
+        {
+    cout << "Deleting Head...";
+    DeleteHead();
+    PrintDoubleLinkedList();
+        }
+    else if(choice==10)
+        {
+    cout << "Deleting Tail...";
+    DeleteTail();
+    PrintDoubleLinkedList();
+        
+        }
+    else if(choice==11)
+        {
+    cout << "Which number would you like to delete? ";
+    int element;
+    cin>>element;
+    SearchAndDelete(element);
+    PrintDoubleLinkedList();
+        }
+    else if(choice==12)
+        {
+    cout << "Printing...";
+    PrintDoubleLinkedList();
+        }
+        
+    else if(choice==13)
+        {
+    cout << "Exiting the Menu";
+    break;
+        }
+       
+    }
+return 0;
+}
