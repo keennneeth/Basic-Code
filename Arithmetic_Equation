@@ -1,0 +1,249 @@
+// Kenneth Rodriguez, Lab #6 //
+
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+struct Node
+{
+  string val;
+  char data;
+  Node *left, *right;
+
+  Node(int data)
+  {
+    this->data = data;
+    this->left = this->right = nullptr;
+  };
+
+  Node(int data, Node *left, Node *right)
+  {
+    this->data = data;
+    this->left = left;
+    this->right = right;
+  };
+};
+
+bool isOperator(char c) {
+  return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^');
+}
+
+void postorder(Node* root)
+{
+  if (root == nullptr) {
+    return;
+  }
+
+  postorder(root->left);
+  postorder(root->right);
+  cout << root->data;
+}
+
+Node* construct(string postfix)
+{
+  stack<Node*> s;
+
+  for (char c : postfix)
+  {
+    if (isOperator(c))
+    {
+Node* x = s.top();
+s.pop();
+
+Node* y = s.top();
+s.pop();
+
+Node* node = new Node(c, y, x);
+
+s.push(node);
+    }
+    else {
+      s.push(new Node(c));
+    }
+  }
+  return s.top();
+}
+int prec(char c) {
+  if (c == '^')
+    return 3;
+  else if (c == '/' || c == '*')
+    return 2;
+  else if (c == '+' || c == '-')
+    return 1;
+  else
+    return -1;
+}
+
+
+string infixToPostfix(string s) {
+
+  stack<char> st;
+  string result;
+
+  for (int i = 0; i < s.length(); i++) {
+    char c = s[i];
+
+    if ((c >= '0' && c <= '9'))
+      result += c;
+
+    else if (c == '(')
+      st.push('(');
+
+    else if (c == ')') {
+      while (st.top() != '(')
+      {
+        result += st.top();
+        st.pop();
+      }
+      st.pop();
+    }
+
+    else {
+      while (!st.empty() && prec(s[i]) <= prec(st.top())) {
+        result += st.top();
+        st.pop();
+      }
+      st.push(c);
+    }
+  }
+
+  while (!st.empty()) {
+    result += st.top();
+    st.pop();
+  }
+
+  return result;
+}
+
+int precedence(char op){
+    if(op == '+'||op == '-')
+    return 1;
+    if(op == '*'||op == '/')
+    return 2;
+    return 0;
+}
+int applyOperation(int a, int b, char op){
+    switch(op){
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': return a / b;
+}
+
+    return 0;
+}
+
+
+// Evaluating the Total 
+
+
+int evaluate(string tokens){
+    int i;
+     
+    stack <int> values;
+     
+    stack <char> ops;
+     
+    for(i = 0; i < tokens.length(); i++){
+         
+        if(tokens[i] == ' ')
+            continue;
+         
+        else if(tokens[i] == '('){
+            ops.push(tokens[i]);
+        }
+         
+        else if(isdigit(tokens[i])){
+            int val = 0;
+             
+            while(i < tokens.length() &&
+                        isdigit(tokens[i]))
+            {
+                val = (val*10) + (tokens[i]-'0');
+                i++;
+            }
+             
+            values.push(val);
+              i--;
+        }
+         
+        else if(tokens[i] == ')')
+        {
+            while(!ops.empty() && ops.top() != '(')
+            {
+                int val2 = values.top();
+                values.pop();
+                 
+                int val1 = values.top();
+                values.pop();
+                 
+                char op = ops.top();
+                ops.pop();
+                 
+                values.push(applyOperation(val1, val2, op));
+            }
+            if(!ops.empty())
+               ops.pop();
+        }
+         
+        else
+        {
+while(!ops.empty() && precedence(ops.top())
+>= precedence(tokens[i]))
+{
+        int val2 = values.top();
+        values.pop();
+                 
+        int val1 = values.top();
+        values.pop();
+                 
+        char op = ops.top();
+        ops.pop();
+                 
+        values.push(applyOperation(val1, val2, op));
+            }
+             
+            ops.push(tokens[i]);
+        }
+    }
+     
+    while(!ops.empty()){
+        int val2 = values.top();
+        values.pop();
+                 
+        int val1 = values.top();
+        values.pop();
+                 
+        char op = ops.top();
+        ops.pop();
+                 
+        values.push(applyOperation(val1, val2, op));
+    }
+     
+    return values.top();
+}
+
+int main()
+{
+  
+  string exp;
+  cout << "Enter an arithmetic equation: ";
+  cin >> exp;
+
+  Node* root = construct(infixToPostfix(exp));
+
+
+  cout << "The Expression given was: ";
+  cout << exp << endl;
+
+  cout << "The Postfix Expression is: ";
+  postorder(root);
+  
+  cout << " (Displaying the tree)";
+
+
+cout << "\nThe total of the expression is: ";
+cout << evaluate (exp);
+  return 0;
+}
