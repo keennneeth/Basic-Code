@@ -1,0 +1,112 @@
+/*Homework #3, Kenneth Rodriguez */
+
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+using namespace std;
+
+char Result(int number)
+{
+if (number >= 0 && number <= 9)
+return (char)(number + '0');
+else
+return (char)(number - 10 + 'A');
+}
+
+void StringRev(char *strr)
+
+{
+int len = strlen(strr);
+int i;
+for (i = 0; i < len/2; i++)
+{
+
+char temp = strr[i];
+strr[i] = strr[len-i-1];
+strr[len-i-1] = temp;
+
+}
+}
+
+char* decToBase(char res[], int base, int inputnumber)
+{
+
+int index_value = 0;
+while (inputnumber > 0)
+
+{
+res[index_value++] = Result(inputnumber % base);
+inputnumber /= base;
+}
+
+res[index_value] = '\0';
+
+StringRev(res);
+return res;
+}
+
+
+
+int main()
+{
+int number,base,choice;
+
+char res[100];
+{
+cout<<"           M E N U         " << endl;
+
+cout<<"Binary (0), Octal (1), Hexadecimal (2)" << endl;
+cout<<"Exit (3)" << endl;
+cin>>choice;
+
+
+switch (choice)
+{
+case 0:
+{
+
+cout<<"What Number do you want to convert? ";
+cin>>number;
+
+printf("%d in binary is"
+" %s\n", number, decToBase(res, 2, number)); 
+break;
+}
+
+case 1:
+{
+
+cout<<"What Number do you want to convert? ";
+cin>>number;
+
+ printf("%d in Octal is"
+" %s\n", number, decToBase(res, 8, number)); 
+break;
+}
+
+case 2:
+{
+    
+cout<<"What Number do you want to convert? ";
+cin>>number;
+
+    printf("%d in Hexadecimal is"
+" %s\n", number, decToBase(res, 16, number));
+break; 
+}
+
+
+case 3:
+{
+cout << "Exiting the program...";
+break;
+}
+
+
+return 0;
+
+}
+}
+}
