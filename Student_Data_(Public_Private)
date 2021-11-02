@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+
+class Student
+{
+private:
+int admno;
+string sname;
+float eng,math,science;
+float total;
+float ctotal;
+
+public:
+void takeData(){
+
+cout << "Enter Admno: ";
+cin >> admno;
+
+cout << "Enter your name: ";
+cin >> sname;
+
+cout << "Enter your Average" << endl;
+cout << "English: " ;
+cin >> eng;
+
+cout << "Math: ";
+cin >> math;
+
+cout << "Science: ";
+cin >> science;
+
+
+cout << "_________________________________" << endl;
+
+total = eng+math+science;
+
+}
+
+void showData()
+{
+cout << "Admno: " << admno << endl;
+cout << "Name: " << sname << endl;
+cout << "English Grade: " << eng << endl;
+cout << "Math Grade: " << math << endl;
+cout << "Science Grade: " << science << endl;
+cout << "Total is: " << total << endl;
+
+}
+};
+
+int main()
+{
+Student data;
+
+data.takeData();
+data.showData();
+
+return 0;
+
+}
