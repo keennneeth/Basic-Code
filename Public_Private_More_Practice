@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+
+class BOOK{
+private:
+int BookNum;
+string BookTitle;
+float Price;
+void Total_Cost(int c)
+
+{
+float tc;
+tc=Price*c;
+cout << tc;
+}
+
+
+public:
+void input()
+{
+cout << "Input Book Number: ";
+cin >> BookNum;
+cout << "Book Title: ";
+cin >> BookTitle;
+cout << "Price: ";
+cin >> Price;
+}
+
+void purchase()
+{
+int c;
+
+cout << "How many copies would you like to purchase? ";
+cin >> c;
+
+cout << "Your total for " << c << " books will be: $";
+Total_Cost(c);
+
+
+}
+};
+
+int main()
+{
+BOOK obj;
+obj.input();
+obj.purchase();
+
+return 0;
+
+}
