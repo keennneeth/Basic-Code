@@ -1,0 +1,273 @@
+#include <bits/stdc++.h>
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+	int data;
+	Node *left, *right;
+};
+Node* newNode(int data)
+{
+	Node* temp = new Node();
+	temp->data = data;
+	temp->left = temp->right = NULL;
+	return temp;
+}
+
+Node* Tree(Node* temp, int data )
+{
+    if (temp == NULL)
+        return newNode(data);
+    if (data < temp->data)
+        temp->left = Tree(temp->left, data);
+    else
+        temp->right = Tree(temp->right, data);
+    return temp;
+}
+
+void Search(Node *root, int data)
+{
+	int pos = 0;
+	Node *temp = new Node;
+	temp = root;
+	// Run the loop until temp points to a NULL pointer.
+	while(temp != NULL)
+	{
+		pos++;
+		if(temp->data == data)
+		{
+			cout<<" "<<pos;
+
+			return;
+		}
+		else if(temp->data > data)
+			temp = temp->left;
+		else
+			temp = temp->right;
+	}
+    cout<<"DOES NOT EXIST IN TREE\n";
+	return;
+
+}
+
+Node* Min(Node*root)
+{
+    while(root->left!=NULL)
+    {
+        root=root->left;
+    }
+    return root;
+}
+
+
+Node* Delete( Node* root,int value)
+{
+
+	if(root==NULL)
+		return root;
+	else if(value< root->data)
+	{
+		root->left= Delete(root->left,value);
+	}
+	else if(value> root->data)
+	{
+		root->right= Delete(root->right,value);
+	}
+
+	// Node deletion
+	else
+	{
+		// Leaf Node
+		if(root->left==NULL&&root->right==NULL)
+		{
+			delete root;
+			root=NULL;
+			return root;
+		}
+		//one child
+		else if(root->left==NULL)
+		{
+			struct Node* temp=root;
+			root=root->right;
+			delete temp;
+			return root;
+		}
+		else if(root->right==NULL)
+		{
+			struct Node* temp=root;
+			root=root->left;
+			delete temp;
+			return root;
+		}
+		//child
+		else
+		{
+			struct Node*temp=Min(root->right);
+			root->data=temp->data;
+			root->right=Delete(root->right,temp->data);
+		}
+	}
+	return root;
+
+}
+
+
+
+bool ifNodeExists(struct Node* node, int num)
+{
+	 if (node == NULL)
+        return false;
+ 
+    if (node->data == num)
+        return true;
+ 
+    bool res1 = ifNodeExists(node->left, num);
+    
+    if(res1) return true;
+    bool res2 = ifNodeExists(node->right, num);
+ 
+    return res2;
+}
+ 
+
+void displayInOrder(struct Node* root)
+{
+
+    if (!root)
+    return;
+        displayInOrder(root->left);
+        cout<<root->data<<" ";
+        displayInOrder(root->right);
+}
+
+void displayPostOrder(struct Node* root)
+{
+    if (root == NULL)
+    return;
+        displayPostOrder(root->left);
+         displayPostOrder(root->right);
+        cout<<root->data<<" ";
+       
+}
+
+void DisplayPreOrder(struct Node* root)
+{
+
+ if (root == NULL)
+ return;
+
+ cout <<root->data << " ";
+DisplayPreOrder(root -> left);
+DisplayPreOrder(root -> right);
+
+}
+
+
+void traverse(Node* root)
+{
+     if(root == NULL) return;
+    queue<Node*> Q;
+    Q.push(root);
+    while(!Q.empty())
+    {
+        Node* current = Q.front();
+        cout<< current->data << " ";
+        if(current->left != NULL) Q.push(current->left);
+        if(current->right != NULL) Q.push(current->right);
+        Q.pop();
+    }
+}
+
+int main()
+{
+
+int choice;
+
+	char ch;
+	int number, arr[20],size;
+	Node *root = new Node;
+	root = NULL;
+    
+while (true)
+{
+cout << "               M E N U                 ";
+cout << "\n    Create (0), Search (1), Breadth-First Traversal (2)";
+cout << "\nDepth-First Traversal: preorder (3), inorder (4), postorder (5)";
+cout << "\n          Delete (6), Exit Program (7)";
+cout << "\n Choose? ";
+
+cin >> choice;
+
+switch (choice)
+{
+case 0:
+  cout<<"How many numbers will be in your tree? ";
+	cin>>size;
+    
+	cout<<"Create your tree: \n";
+	for(int i=0;i<size;i++)
+    {
+        cin>>arr[i];
+    }
+	for(int i = 0; i < size; i++)
+	{
+	    root = Tree(root, arr[i]);
+	}
+break;
+ 
+case 1: 
+
+cout << "Search: ";
+cin >> number;
+
+ if (ifNodeExists(root, number))
+        cout << "The node exists in the tree\n";
+    else
+        cout << "There is no such node in the tree!\n";
+break;
+
+case 2:
+cout << "Breadth-First Traversal: ";
+traverse(root);
+cout << endl;
+break;
+
+
+case 3:
+cout<<"Elements Pre-Order: ";
+DisplayPreOrder(root);
+cout<<endl;
+break;
+
+case 4:
+
+cout<<"Elements In-Order: ";
+displayInOrder(root);
+cout<<endl;
+break;
+
+case 5:
+
+cout << "Elements in Post-Order: ";
+displayPostOrder(root);
+cout <<endl;
+break;
+
+
+case 6:
+cout << "What number would you like to delete? ";
+cin >> number;
+Search(root, number);
+Delete(root, number);
+break;
+
+case 7: 
+cout << "Exiting the menu";
+exit(0);
+
+}
+}
+
+return 0;
+}
